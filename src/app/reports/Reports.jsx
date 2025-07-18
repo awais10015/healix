@@ -145,12 +145,12 @@ const Reports = () => {
 
   <hr className="my-10 border-gray-300" />
 
-  <div className="max-w-6xl mx-auto mb-10">
+  <div className="max-w-6xl text-center mx-auto mb-10">
     <h2 className="text-2xl font-semibold mb-6">
       Lab Test Reports
     </h2>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {reports.map((report) => (
         <div
           key={report._id}
