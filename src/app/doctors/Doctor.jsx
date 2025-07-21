@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const Doctor = () => {
   gsap.registerPlugin(ScrollTrigger);
 
@@ -68,6 +69,7 @@ const Doctor = () => {
   ];
   return (
     <>
+    <Navbar/>
       <div className="four flex flex-col justify-center items-center">
         <h1 className="text-5xl mt-10 font-medium">Meet the team</h1>
         <div className="doc grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-15">
@@ -104,6 +106,7 @@ const Doctor = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

@@ -2,9 +2,10 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import Navbar from "@/components/Navbar";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Footer from "@/components/Footer";
 
 const Reviews = () => {
   gsap.registerPlugin(ScrollTrigger);
@@ -105,6 +106,7 @@ const Reviews = () => {
   ];
   return (
     <>
+    <Navbar/>
       <div className="px-5 sm:px-10 lg:px-20 py-10">
         <div className="text-center mb-15 mt-10">
           <h1 className="text-3xl sm:text-5xl font-bold mb-4">
@@ -180,6 +182,7 @@ const Reviews = () => {
           </div>
         </div>
       </div>
+      < Footer/>
     </>
   );
 };

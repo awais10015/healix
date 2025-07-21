@@ -16,12 +16,13 @@ import { Icons } from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
 
 // import Navbar from '@/app/components/Navbar'
-// import Navbar from "@/components/Navbar"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer";
 
 export default function SignUpPage() {
   return (
     <>
-    {/* <Navbar/> */}
+    <Navbar/>
     <div className="grid mt-10 mb-10 w-full grow items-center px-4 sm:justify-center">
       <SignUp.Root>
         <Clerk.Loading>
@@ -247,6 +248,7 @@ export default function SignUpPage() {
         </Clerk.Loading>
       </SignUp.Root>
     </div>
+    <Footer/>
     </>
   )
 }

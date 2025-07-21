@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
-
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const Reports = () => {
   const [patientName, setPatientName] = useState("");
   const [patientId, setPatientId] = useState("");
@@ -98,6 +99,7 @@ const Reports = () => {
 
   return (
    <>
+   <Navbar/>
   <form
     onSubmit={submitHandle}
     className=" shadow-md p-6 rounded-lg max-w-xl mx-auto space-y-4"
@@ -192,6 +194,7 @@ const Reports = () => {
       </button>
     </div>
   )}
+  <Footer/>
 </>
 
   );

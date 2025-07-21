@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
         password: password_enabled || "",
       };
 
+      console.log("user",user)
       await createUser(user); 
     }
 

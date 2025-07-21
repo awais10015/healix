@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const About = () => {
   gsap.registerPlugin(ScrollTrigger);
 
@@ -108,6 +109,7 @@ const About = () => {
   ];
   return (
     <>
+    <Navbar/>
       <div className="one px-5 mt-15 sm:px-10 md:px-16 lg:px-20 py-10 space-y-10">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-start">
@@ -234,6 +236,7 @@ const About = () => {
           </span>
         </h1>
       </div>
+      <Footer/>
     </>
   );
 };

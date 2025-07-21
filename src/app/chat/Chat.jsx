@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { ModeToggle } from "@/components/modeToggle";
+import { ArrowLeft } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function ChatPage() {
   const { user } = useUser();
@@ -32,7 +36,6 @@ export default function ChatPage() {
 
       const data = await res.json();
 
-      // Make sure it's an array
       if (!Array.isArray(data)) {
         console.error("Expected array, got:", data);
         setMessages([]);
@@ -65,42 +68,66 @@ export default function ChatPage() {
   }, [doctorId]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">Chat with Doctor</h1>
+   <div className="relative p-4 w-full min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 
-      <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto border p-2 rounded">
-        {Array.isArray(messages) && messages.length > 0 ? (
-          messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`p-2 rounded ${
-                msg.senderId === user?.id
-                  ? "bg-blue-100 self-end"
-                  : "bg-gray-100 self-start"
-              }`}
-            >
-              {msg.message}
-            </div>
-          ))
-        ) : (
-          <p className="text-sm text-gray-400">No messages yet.</p>
-        )}
+  <div className="flex justify-between items-center mb-6">
+    <div className="flex gap-2 items-center">
+      
+      <div className="block md:hidden">
+        <SidebarTrigger />
       </div>
 
-      <div className="mt-4 flex">
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="border p-2 flex-1 rounded"
-          placeholder="Type your message..."
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-blue-500 text-white px-4 ml-2 rounded"
-        >
-          Send
-        </button>
-      </div>
+    
+      <Link href="/doctors">
+        <p className="inline-flex items-center gap-2 text-blue-600 hover:text-white hover:bg-blue-600 transition-colors duration-200 cursor-pointer px-3 py-1 rounded-full border border-blue-600 shadow-sm text-sm font-semibold">
+          <ArrowLeft className="w-4 h-4" />
+          Go Back
+        </p>
+      </Link>
     </div>
+
+   
+    <ModeToggle />
+  </div>
+
+  
+  <h1 className="text-2xl font-semibold mb-4">Chat with Doctor</h1>
+
+  <div className="flex flex-col gap-2 h-[450px] overflow-y-auto p-4 rounded-md border bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide">
+    {Array.isArray(messages) && messages.length > 0 ? (
+      messages.map((msg, i) => (
+        <div
+          key={i}
+          className={`max-w-xs px-4 py-2 rounded-lg text-sm shadow-md ${
+            msg.senderId === user?.id
+              ? "bg-blue-500 text-white self-end"
+              : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 self-start"
+          }`}
+        >
+          {msg.message}
+        </div>
+      ))
+    ) : (
+      <p className="text-sm text-gray-400 italic">No messages yet.</p>
+    )}
+  </div>
+
+  
+  <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white dark:bg-gray-900 z-20 p-4 border-t flex items-center gap-2 sm:px-6 md:px-10">
+    <input
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 rounded-lg focus:outline-none shadow-sm text-sm"
+      placeholder="Type your message..."
+    />
+    <button
+      onClick={sendMessage}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm font-medium shadow"
+    >
+      Send
+    </button>
+  </div>
+</div>
+
   );
 }
