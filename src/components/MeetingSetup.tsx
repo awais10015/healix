@@ -54,7 +54,7 @@ const MeetingSetup = ({
         </div>
 
         <Button
-          className="w-full bg-green-600"
+          className="w-full bg-green-600 hover:cursor-pointer hover:scale-105"
           onClick={() => {
             call.join();
             setIsSetupComplete(true);

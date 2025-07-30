@@ -128,7 +128,7 @@ const Doctor = () => {
                           width={500}
                           height={500}
                           alt={doc.name}
-                          className="object-cover w-full h-full duration-300 hover:scale-105 transition-all ease-in-out"
+                          className="hover:cursor-pointer object-cover w-full h-full duration-300 hover:scale-105 transition-all ease-in-out"
                         />
                       </div>
                     </div>
@@ -145,7 +145,7 @@ const Doctor = () => {
                           setDoctorId(doc.id);
                           setDoctor(doc.id)
                         }}
-                        className="ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
+                        className="ml-auto hover:cursor-pointer hover:scale-105 bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                       >
                         Its Me
                       </button>
@@ -169,7 +169,7 @@ const Doctor = () => {
                         width={128}
                         height={128}
                         alt={patient.username}
-                        className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+                        className="hover:cursor-pointer object-cover w-full h-full hover:scale-105 transition-transform duration-300"
                       />
                     </div>
 
@@ -186,7 +186,7 @@ const Doctor = () => {
                           handleChat(patient.clerkId);
                           setSelectedUser(patient);
                         }}
-                        className="w-full bg-[#2563EB] text-white py-2 rounded-xl hover:bg-[#1E40AF] transition-colors duration-300"
+                        className="hover:cursor-pointer hover:scale-105 w-full bg-[#2563EB] text-white py-2 rounded-xl hover:bg-[#1E40AF] transition-colors duration-300"
                       >
                         Chat
                       </button>
@@ -213,7 +213,7 @@ const Doctor = () => {
                       width={500}
                       height={500}
                       alt={doc.name}
-                      className="object-cover w-full h-full duration-300 hover:scale-105 transition-all ease-in-out"
+                      className="hover:cursor-pointer object-cover w-full h-full duration-300 hover:scale-105 transition-all ease-in-out"
                     />
                   </div>
                 </div>
@@ -229,7 +229,7 @@ const Doctor = () => {
                         setSelectedUser(doc);
                         setDoctor(doc.id)
                       }}
-                      className="ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
+                      className="hover:cursor-pointer hover:scale-105 ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                     >
                       Chat
                     </button>

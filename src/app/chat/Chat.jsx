@@ -233,7 +233,7 @@ const createMeeting = async () => {
 
             {/* video call button */}
             <button
-              className="p-2 bg-blue-500 text-white rounded-full"
+              className="p-2 bg-blue-500 text-white rounded-full hover:cursor-pointer hover:scale-105"
               onClick={createMeeting}
               disabled={
                 !callParticipants.length || callParticipants.includes(undefined)
