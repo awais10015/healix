@@ -3,6 +3,20 @@ import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 import { createUser } from "@/lib/actions/user.action";
 
+// Define a custom type for Clerk "user.created" event
+interface ClerkUserCreatedEvent {
+  data: {
+    id: string;
+    email_addresses: { email_address: string }[];
+    image_url: string;
+    first_name: string;
+    last_name: string;
+    username: string;
+    password_enabled: boolean;
+  };
+  type: "user.created" | string;
+}
+
 export async function POST(req: NextRequest) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
 
@@ -16,19 +30,18 @@ export async function POST(req: NextRequest) {
 
   const svix = new Webhook(WEBHOOK_SECRET);
 
-  let evt: any;
+  let evt: ClerkUserCreatedEvent;
   try {
     evt = svix.verify(payload, {
       "svix-id": headerPayload.get("svix-id")!,
       "svix-timestamp": headerPayload.get("svix-timestamp")!,
       "svix-signature": headerPayload.get("svix-signature")!,
-    });
+    }) as ClerkUserCreatedEvent;
   } catch (err) {
     console.error("❌ Webhook verification failed:", err);
     return new Response("Invalid webhook", { status: 400 });
   }
 
-  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created") {
@@ -50,7 +63,7 @@ export async function POST(req: NextRequest) {
       lastName: last_name || "",
       name: `${first_name || username || ""} ${last_name || ""}`.trim(),
       photo: image_url || "",
-      passwordEnabled: String(password_enabled) || "",
+      passwordEnabled: String(password_enabled),
     };
 
     console.log("✅ New user data:", user);

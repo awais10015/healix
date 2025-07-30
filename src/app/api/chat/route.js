@@ -2,7 +2,7 @@ import { connect } from "@/lib/db";
 import Chat from "../../../models/Chat";
 import Message from "@/models/Message";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+// import { NextRequest } from "next/server";
 
 export async function POST(req) {
   await connect();
@@ -41,7 +41,7 @@ export async function GET(req) {
     const chat = await Chat.findOne({
       participants: { $all: participants, $size: 2 },
     }).populate("messages");
-
+    console.log(Message)
     if (!chat) {
       return NextResponse.json({ error: "Chat not found" }, { status: 404 });
     }
