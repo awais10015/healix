@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const meeting = await Meeting.create({ meetingId , participants});
     return NextResponse.json(meeting, { status: 201 });
-  } catch (err) {
+  } catch{
     return NextResponse.json({ error: "Failed to create meeting" }, { status: 500 });
   }
 }

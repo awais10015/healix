@@ -1,3 +1,4 @@
+"use client"
 import {
   Sidebar,
   SidebarContent,
@@ -28,10 +29,10 @@ type users = {
   lastName: string;
   __v: number;
 };
-type AppSidebarProps = {
-  onSelectUser: (user: users) => void;
-};
-export function AppSidebar({ onSelectUser }: AppSidebarProps) {
+// type AppSidebarProps = {
+//   onSelectUser: (user: users) => void;
+// };
+export function AppSidebar() {
   const [Admin, setAdmin] = useState("");
   const [patients, setPatients] = useState<users[]>([]);
   const [doctors, setDoctors] = useState<users[]>([]);
@@ -87,7 +88,7 @@ if (selectedTheme === "dark") {
         throw new Error("Failed to create or fetch chat");
       }
       const newChat = await res.json();
-      // console.log("Chat ready:", newChat);
+      console.log("Chat ready:", newChat);
     } catch (error) {
       console.error("Chat creation failed:", error);
     }
@@ -108,7 +109,7 @@ if (selectedTheme === "dark") {
                 className=" flex gap-2 justify-start items-center p-4 rounded-lg shadow-sm hover:shadow-sm hover:scale-105 transition cursor-pointer"
                 onClick={() => {
                   handleChat(patient._id);
-                  onSelectUser(patient);
+                  // onSelectUser(patient);
                   setSelectedUser(patient)
                 }}
               >
@@ -131,7 +132,7 @@ if (selectedTheme === "dark") {
                 className="flex gap-2 justify-start items-center p-4 rounded-lg shadow-sm hover:shadow-sm hover:scale-105 transition cursor-pointer"
                 onClick={() => {
                   handleChat(doctor.id);
-                  onSelectUser(doctor);
+                  // onSelectUser(doctor);
                   setSelectedUser(doctor)
                 }}
               >

@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React from "react";
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
 

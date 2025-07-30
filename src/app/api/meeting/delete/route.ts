@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   try {
     await Meeting.deleteOne({ meetingId });
     return NextResponse.json({ message: "Meeting deleted" });
-  } catch (err) {
+  } catch{
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
   }
 }

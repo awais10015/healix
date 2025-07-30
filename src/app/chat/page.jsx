@@ -1,12 +1,12 @@
 import React, { Suspense } from "react";
-import Chat from "./Chat";
+import Layout from "./layout";
 
-const page = () => {
+const Page = () => {
   return (
     <Suspense fallback={<div>Loading chat...</div>}>
-      <Chat />
+      <Layout />
     </Suspense>
   );
 };
 
-export default page;
+export default Page;

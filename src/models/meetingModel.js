@@ -1,6 +1,6 @@
 // models/meetingModel.ts
 import mongoose from "mongoose";
-import { type } from "os";
+// import { type } from "os";
 
 const meetingSchema = new mongoose.Schema({
   meetingId: { type: String, required: true, unique: true },

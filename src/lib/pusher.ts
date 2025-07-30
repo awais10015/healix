@@ -21,7 +21,7 @@
 // NEXT_PUBLIC_PUSHER_CLUSTER=ap2
 
 import PusherServer from "pusher";
-import Pusher from "pusher-js";
+// import Pusher from "pusher-js";
 import PusherClient from "pusher-js";
 
 export const pusherServer = new PusherServer({

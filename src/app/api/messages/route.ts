@@ -1,6 +1,6 @@
 import { connect } from "@/lib/db";
 import Chat from "@/models/Chat";
-import { pusherServer } from "@/lib/pusher";
+// import { pusherServer } from "@/lib/pusher";
 
 import Message from "@/models/Message";
 import { NextResponse, type NextRequest } from "next/server";
