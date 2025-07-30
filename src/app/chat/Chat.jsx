@@ -17,8 +17,8 @@ import { useRouter } from "next/navigation";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 
 export default function ChatPage() {
-  const [chats, setChats] = useState(null);
-  const [chat, setChat] = useState(null);
+  const [chats, setChats] = useState();
+  const [chat, setChat] = useState();
   const [message, setMessage] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -53,52 +53,60 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!user) return;
+
+    let newSenderId = "";
+    let newReceiverId = "";
+
     if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
-      setSenderId(doctorId);
-      setReceiverId(selectedUser?.clerkId);
+      newSenderId = doctorId;
+      newReceiverId = selectedUser?.clerkId || "";
       setCallParticipants([
-        "user_30aEH6pXYoewpKlMGoq5xhTQch9",
+        "user_30BLsrvt5tE8vUDTJPgkEEYjM5P",
         selectedUser?.clerkId,
       ]);
+      // console.log("selecteduser.clerkId", selectedUser?.clerkId);
+      // console.log("newReceiverId", newReceiverId);
     } else {
-      setSenderId(user.id);
-      setReceiverId(doctorId);
-      setCallParticipants(["user_30aEH6pXYoewpKlMGoq5xhTQch9", user.id]);
+      newSenderId = user.id;
+      newReceiverId = doctorId;
+      setCallParticipants(["user_30BLsrvt5tE8vUDTJPgkEEYjM5P", user.id]);
     }
-  }, [user, doctorId, selectedUser]);
 
-  useEffect(() => {
+    setSenderId(newSenderId);
+    setReceiverId(newReceiverId);
+
     const fetchChats = async () => {
       const res = await fetch("/api/chat");
       const data = await res.json();
       setChats(data);
-      // console.log("callParticipants", callParticipants);
 
       const filteredChats = data.filter(
         (chat) =>
-          chat.participants.includes(senderId) &&
-          chat.participants.includes(receiverId)
+          chat.participants.includes(newSenderId) &&
+          chat.participants.includes(newReceiverId)
       );
-      // console.log(filteredChats)
+
       if (filteredChats.length > 0) {
         setChat(filteredChats[0]._id);
         setMessage(filteredChats[0].messages);
-        // console.log(filteredChats[0].messages);
       } else {
         setChat(null);
         setMessage([]);
       }
     };
-    if (senderId && receiverId) {
+
+    if (newSenderId && newReceiverId) {
       fetchChats();
     }
-  }, [senderId, receiverId, selectedUser, callParticipants]);
+  }, [user, doctorId, selectedUser]);
+
 
   // useEffect(() => {
-  //   console.log(selectedUser, doctorId);
-  // }, [senderId, receiverId, selectedUser]);
+  //   console.log("chat is", chat);
+  // }, [chat]);
 
   const submitHandler = async () => {
+    console.log("chat when msg sent", chat);
     if (!text.trim()) return;
 
     if (!chat) {

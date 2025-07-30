@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import SelectedUserContextProvider from "@/app/context/selectedUserContextProvider";
 import TrackThemeContextProvider from "@/app/context/trackThemeContextProvider";
 import { StreamVideoProvider } from "@/providers/StreamClientProvider";
-
+import DoctorContextProvider from "@/app/context/doctorContextProvider";
 export const metadata: Metadata = {
   title: "Healix",
   description: "Where care meets innovation",
@@ -29,11 +29,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TrackThemeContextProvider>
-              <SelectedUserContextProvider>
-                <StreamVideoProvider>{children}</StreamVideoProvider>
-              </SelectedUserContextProvider>
-            </TrackThemeContextProvider>
+            <DoctorContextProvider>
+              <TrackThemeContextProvider>
+                <SelectedUserContextProvider>
+                  <StreamVideoProvider>{children}</StreamVideoProvider>
+                </SelectedUserContextProvider>
+              </TrackThemeContextProvider>
+            </DoctorContextProvider>
           </ThemeProvider>
           {/* </ClerkProvider> */}
         </body>

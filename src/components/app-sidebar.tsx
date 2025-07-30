@@ -15,6 +15,7 @@ import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import selectedUserContext from "@/app/context/selectedUserContext";
 import trackThemeContext from "@/app/context/trackThemeContext";
+import doctorContext from "@/app/context/doctorContext";
 
 type users = {
   _id: string;
@@ -39,6 +40,7 @@ export function AppSidebar() {
   const { user } = useUser();
   const{setSelectedUser} = useContext(selectedUserContext)
   const {selectedTheme} = useContext(trackThemeContext)
+  const {doctor} = useContext(doctorContext)
   const fetchDoctors = async () => {
     
     const res = await fetch("/api/doctors");
@@ -71,12 +73,14 @@ if (selectedTheme === "dark") {
   }, [user]);
 
   const handleChat = async (docId: string) => {
+    
     if (!docId || !user?.id) {
       console.error("Missing participant IDs");
       return;
     }
-    const participants = [docId, user.id];
-    try {
+     if (Admin === "Doctor") {
+      const participants = [doctor, docId];
+      try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -92,6 +96,26 @@ if (selectedTheme === "dark") {
     } catch (error) {
       console.error("Chat creation failed:", error);
     }
+    } else {
+      const participants = [docId, user?.id];
+      try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ participants }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to create or fetch chat");
+      }
+      const newChat = await res.json();
+      console.log("Chat ready:", newChat);
+    } catch (error) {
+      console.error("Chat creation failed:", error);
+    }
+    }
+    
   };
   return (
     <Sidebar className="border-none">
@@ -108,7 +132,8 @@ if (selectedTheme === "dark") {
                 key={patient._id}
                 className=" flex gap-2 justify-start items-center p-4 rounded-lg shadow-sm hover:shadow-sm hover:scale-105 transition cursor-pointer"
                 onClick={() => {
-                  handleChat(patient._id);
+                  handleChat(patient.clerkId);
+                  console.log("patient.id", patient.clerkId)
                   // onSelectUser(patient);
                   setSelectedUser(patient)
                 }}
@@ -132,6 +157,7 @@ if (selectedTheme === "dark") {
                 className="flex gap-2 justify-start items-center p-4 rounded-lg shadow-sm hover:shadow-sm hover:scale-105 transition cursor-pointer"
                 onClick={() => {
                   handleChat(doctor.id);
+                  console.log("doctor.id", doctor.id)
                   // onSelectUser(doctor);
                   setSelectedUser(doctor)
                 }}

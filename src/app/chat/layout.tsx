@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 // import { useEffect, useState } from "react";
 import ChatPage from "./Chat";
 import { Suspense } from "react";
+import SelectedUserContextProvider from "../context/selectedUserContextProvider";
 
 // type users = {
 //   _id: string;
@@ -27,19 +28,21 @@ export default function Layout() {
   // }, [selectedUser])
 
   return (
-    <SidebarProvider>
-      <div className="flex h-screen w-screen overflow-hidden">
-        <aside className="w-64 border-r hidden sm:block md:block bg-gray-100">
-          {/* <AppSidebar onSelectUser={setSelectedUser} /> */}
-          <AppSidebar />
-        </aside>
+    <SelectedUserContextProvider>
+      <SidebarProvider>
+        <div className="flex h-screen w-screen overflow-hidden">
+          <aside className="w-64 border-r hidden sm:block md:block bg-gray-100">
+            {/* <AppSidebar onSelectUser={setSelectedUser} /> */}
+            <AppSidebar />
+          </aside>
 
-        <main className="flex-1 relative overflow-hidden">
-          <Suspense fallback={<div>Loading chat...</div>}>
-            <ChatPage />
-          </Suspense>
-        </main>
-      </div>
-    </SidebarProvider>
+          <main className="flex-1 relative overflow-hidden">
+            <Suspense fallback={<div>Loading chat...</div>}>
+              <ChatPage />
+            </Suspense>
+          </main>
+        </div>
+      </SidebarProvider>
+    </SelectedUserContextProvider>
   );
 }
