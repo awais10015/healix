@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useUser } from "@clerk/nextjs";
+
 const Reports = () => {
+  const { user } = useUser();
   const [patientName, setPatientName] = useState("");
   const [patientId, setPatientId] = useState("");
   const [testName, setTestName] = useState("");
@@ -98,105 +101,105 @@ const Reports = () => {
   };
 
   return (
-   <>
-   <Navbar/>
-  <form
-    onSubmit={submitHandle}
-    className=" shadow-md p-6 rounded-lg max-w-xl mx-auto space-y-4"
-  >
-    <h2 className="text-2xl font-bold text-center">
-      Submit Lab Report
-    </h2>
+    <>
+      <Navbar />
+      {Array.isArray(user?.emailAddresses) &&
+        user.emailAddresses[0]?.emailAddress === "awais10015@gmail.com" && (
+          <form
+            onSubmit={submitHandle}
+            className=" shadow-md p-6 rounded-lg max-w-xl mx-auto space-y-4"
+          >
+            <h2 className="text-2xl font-bold text-center">
+              Submit Lab Report
+            </h2>
 
-    <input
-      value={patientName}
-      onChange={(e) => setPatientName(e.target.value)}
-      placeholder="Patient Name"
-      className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-    />
+            <input
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+              placeholder="Patient Name"
+              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
 
-    <input
-      value={patientId}
-      onChange={(e) => setPatientId(e.target.value)}
-      placeholder="Patient ID"
-      className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-    />
+            <input
+              value={patientId}
+              onChange={(e) => setPatientId(e.target.value)}
+              placeholder="Patient ID"
+              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
 
-    <input
-      value={testName}
-      onChange={(e) => setTestName(e.target.value)}
-      placeholder="Test Name"
-      className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-    />
+            <input
+              value={testName}
+              onChange={(e) => setTestName(e.target.value)}
+              placeholder="Test Name"
+              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
 
-    <textarea
-      value={testResult}
-      onChange={(e) => setTestResult(e.target.value)}
-      placeholder="Test Result"
-      className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-      rows={4}
-    />
+            <textarea
+              value={testResult}
+              onChange={(e) => setTestResult(e.target.value)}
+              placeholder="Test Result"
+              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              rows={4}
+            />
 
-    <button
-      type="submit"
-      className="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded hover:bg-blue-700 transition"
-    >
-      Submit
-    </button>
-  </form>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded hover:bg-blue-700 transition"
+            >
+              Submit
+            </button>
+          </form>
+        )}
 
-  <hr className="my-10 border-gray-300" />
+      <hr className="my-10 border-gray-300" />
 
-  <div className="max-w-6xl text-center mx-auto mb-10">
-    <h2 className="text-2xl font-semibold mb-6">
-      Lab Test Reports
-    </h2>
+      <div className="max-w-6xl min-h-[330px] text-center mx-auto mb-10">
+        <h2 className="text-2xl font-semibold mb-6">Lab Test Reports</h2>
 
-    <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {reports.map((report) => (
-        <div
-          key={report._id}
-          className="border p-4 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
-          onClick={() => setSelectedReport(report)}
-        >
-          <h3 className="text-lg font-semibold text-blue-700">
-            {report.testName}
-          </h3>
-          <p className="">Patient: {report.patientName}</p>
-          <p className="">Patient: {report.patientId}</p>
+        <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reports.map((report) => (
+            <div
+              key={report._id}
+              className="border p-4 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
+              onClick={() => setSelectedReport(report)}
+            >
+              <h3 className="text-lg font-semibold text-blue-700">
+                {report.testName}
+              </h3>
+              <p className="">Patient: {report.patientName}</p>
+              <p className="">Patient: {report.patientId}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
+      </div>
 
-  {selectedReport && (
-    <div className="max-w-2xl mx-auto mb-10 mt-10 text-black bg-white border border-gray-300 p-6 rounded-lg shadow">
-      <h3 className="text-xl font-bold  mb-4">Report Details</h3>
+      {selectedReport && (
+        <div className="max-w-2xl mx-auto mb-10 mt-10 text-black bg-white border border-gray-300 p-6 rounded-lg shadow">
+          <h3 className="text-xl font-bold  mb-4">Report Details</h3>
 
-      <p className="mb-2">
-        <strong>Patient ID:</strong> {selectedReport.patientId}
-      </p>
-      <p className="mb-2">
-        <strong>Patient Name:</strong> {selectedReport.patientName}
-      </p>
-      <p className="mb-2">
-        <strong>Test Name:</strong> {selectedReport.testName}
-      </p>
-      <p className="mb-4 whitespace-pre-line">
-        <strong>Test Result:</strong> {selectedReport.testResult}
-      </p>
+          <p className="mb-2">
+            <strong>Patient ID:</strong> {selectedReport.patientId}
+          </p>
+          <p className="mb-2">
+            <strong>Patient Name:</strong> {selectedReport.patientName}
+          </p>
+          <p className="mb-2">
+            <strong>Test Name:</strong> {selectedReport.testName}
+          </p>
+          <p className="mb-4 whitespace-pre-line">
+            <strong>Test Result:</strong> {selectedReport.testResult}
+          </p>
 
-      <button
-        onClick={() => downloadPDF(selectedReport)}
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-      >
-        Download PDF
-      </button>
-    </div>
-  )}
-  <Footer/>
-</>
-
+          <button
+            onClick={() => downloadPDF(selectedReport)}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            Download PDF
+          </button>
+        </div>
+      )}
+      <Footer />
+    </>
   );
 };
 

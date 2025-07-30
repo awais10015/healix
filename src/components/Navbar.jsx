@@ -37,12 +37,12 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="hidden md:flex gap-6">
+      <div className="hidden md:flex gap-8">
         <Link
           href="/doctors"
           className="hover:text-orange-800 hover:scale-105 transition-all ease-in-out"
         >
-          Doctor
+          Consult with Doctor
         </Link>
         <Link
           href="/reports"
