@@ -9,6 +9,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { pusherClient } from "@/lib/pusher";
 import { sendMessage } from "@/lib/actions/message.action";
 import selectedUserContext from "../context/selectedUserContext";
+import { FiSend } from "react-icons/fi";
+import { FaVideo } from "react-icons/fa";
 
 // call imports
 import { useRouter } from "next/navigation";
@@ -55,13 +57,13 @@ export default function ChatPage() {
       setSenderId(doctorId);
       setReceiverId(selectedUser?.clerkId);
       setCallParticipants([
-        "user_30BLsrvt5tE8vUDTJPgkEEYjM5P",
+        "user_30aEH6pXYoewpKlMGoq5xhTQch9",
         selectedUser?.clerkId,
       ]);
     } else {
       setSenderId(user.id);
       setReceiverId(doctorId);
-      setCallParticipants(["user_30BLsrvt5tE8vUDTJPgkEEYjM5P", user.id]);
+      setCallParticipants(["user_30aEH6pXYoewpKlMGoq5xhTQch9", user.id]);
     }
   }, [user, doctorId, selectedUser]);
 
@@ -143,6 +145,7 @@ export default function ChatPage() {
 
   const createMeeting = async () => {
     const res = await fetch("/api/meeting/active");
+    console.log("client", client);
     if (!client || !user) return;
     if (res.ok) {
       const data = await res.json();
@@ -198,34 +201,37 @@ export default function ChatPage() {
             </div>
 
             <Link href="/doctors">
-              <p className="inline-flex items-center gap-2 text-blue-600 hover:text-white hover:bg-blue-600 transition-colors duration-200 cursor-pointer px-3 py-1 rounded-full border border-blue-600 shadow-sm text-sm font-semibold">
+              <span className="inline-flex items-center gap-2 text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-200 px-4 py-2 rounded-full border border-blue-600 shadow-sm text-sm font-medium hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 active:scale-95">
                 <ArrowLeft className="w-4 h-4" />
                 Go Back
-              </p>
+              </span>
             </Link>
           </div>
-          {/* video call button */}
-          <button
-            className="bg-blue-600 text-white"
-            onClick={createMeeting}
-            disabled={
-              !callParticipants.length || callParticipants.includes(undefined)
-            }
-          >
-            StartCall
-          </button>
-          <ModeToggle />
-        </div>
 
-        <h1 className="text-2xl font-semibold mb-4">Chat</h1>
+          <div className="flex gap-5">
+            {/* video call button */}
+
+            <button
+              className="p-2 bg-blue-500 text-white rounded-full"
+              onClick={createMeeting}
+              disabled={
+                !callParticipants.length || callParticipants.includes(undefined)
+              }
+            >
+              <FaVideo size={20} />
+            </button>
+            <ModeToggle />
+          </div>
+        </div>
 
         <div
           id="chat-box"
-          className="flex flex-col gap-2 h-[450px] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide"
+          className="flex flex-col gap-2 h-[490px] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide"
         >
           {Array.isArray(message) && message.length > 0 ? (
             message.map((msg, i) => {
               let bubbleStyle = "";
+
               let isDoctor =
                 msg.senderId === doctorId &&
                 user?.emailAddresses[0]?.emailAddress ===
@@ -234,23 +240,32 @@ export default function ChatPage() {
               let isUser = selectedUser?.clerkId === user?.clerkId;
               // console.log(selectedUser)
               if (isDoctor) {
-                bubbleStyle = "bg-blue-500 text-white self-end";
+                bubbleStyle =
+                  "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
               } else if (
                 isUser &&
                 ["1", "2", "3", "4", "5", "6"].includes(msg.receiverId)
               ) {
-                bubbleStyle = "bg-blue-500 text-white self-end";
+                bubbleStyle =
+                  "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
               } else {
                 bubbleStyle =
-                  "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 self-start";
+                  "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-t-4xl rounded-br-4xl self-start";
               }
 
               return (
                 <div
                   key={i}
-                  className={`max-w-xs px-4 py-2 rounded-lg text-sm shadow-md ${bubbleStyle}`}
+                  className={` max-w-xs px-5 py-3  text-sm shadow-md ${bubbleStyle}`}
                 >
-                  {msg.text}
+                  <div className="text-md font-medium mb-3">{msg.text}</div>
+
+                  <div className=" bottom-1 right-2 text-[10px] text-black">
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
                 </div>
               );
             })
@@ -268,9 +283,9 @@ export default function ChatPage() {
           />
           <button
             onClick={submitHandler}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm font-medium shadow"
+            className="group p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all ease-in-out hover:scale-110"
           >
-            Send
+            <FiSend className="w-5 h-5 transition-all ease-in-out hover:scale-110" />
           </button>
         </div>
       </div>

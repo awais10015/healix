@@ -8,6 +8,7 @@ export async function GET() {
 
   const activeMeeting = await Meeting.findOne().sort({ createdAt: -1 });
   if (!activeMeeting) {
+    console.log("no active meeting")
     return NextResponse.json({ message: "No active meeting" }, { status: 404 });
   }
 

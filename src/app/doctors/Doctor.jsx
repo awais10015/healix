@@ -62,6 +62,7 @@ const Doctor = () => {
         return;
       }
       const participants = [doctorId, docId];
+      console.log(participants)
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -70,11 +71,11 @@ const Doctor = () => {
           },
           body: JSON.stringify({ participants }),
         });
-        if (!res.ok) {
-          throw new Error("Failed to create or fetch chat");
-        }
+        // if (!res.ok) {
+        //   throw new Error("Failed to create or fetch chat");
+        // }
         const newChat = await res.json();
-        // console.log("Chat ready:", newChat);
+        console.log("Chat ready:", newChat);
       } catch (error) {
         console.error("Chat creation failed:", error);
       }

@@ -1,14 +1,14 @@
 import { connect } from "@/lib/db";
 import Chat from "../../../models/Chat";
-// import Message from "@/models/Message";
+import Message from "@/models/Message";
 import { NextResponse } from "next/server";
-// import { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req) {
   await connect();
   const body = await req.json();
   const { participants } = body;
-
+console.log(participants)
   if (!participants || participants.length !== 2) {
     return NextResponse.json(
       { error: "Participants must be an array of two user IDs." },
