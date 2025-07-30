@@ -15,6 +15,7 @@ import { FaVideo } from "react-icons/fa";
 // call imports
 import { useRouter } from "next/navigation";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
+import doctorContext from "../context/doctorContext";
 
 export default function ChatPage() {
   const [chats, setChats] = useState();
@@ -30,6 +31,7 @@ export default function ChatPage() {
   const [receiverId, setReceiverId] = useState("");
   const { selectedUser } = useContext(selectedUserContext);
 
+  const {doctor} = useContext(doctorContext)
   const [callParticipants, setCallParticipants] = useState([]);
 
   //pusher useeffect
@@ -61,7 +63,7 @@ export default function ChatPage() {
       newSenderId = doctorId;
       newReceiverId = selectedUser?.clerkId || "";
       setCallParticipants([
-        "user_30BLsrvt5tE8vUDTJPgkEEYjM5P",
+        doctor,
         selectedUser?.clerkId,
       ]);
       // console.log("selecteduser.clerkId", selectedUser?.clerkId);
@@ -69,7 +71,7 @@ export default function ChatPage() {
     } else {
       newSenderId = user.id;
       newReceiverId = doctorId;
-      setCallParticipants(["user_30BLsrvt5tE8vUDTJPgkEEYjM5P", user.id]);
+      setCallParticipants([doctor, user.id]);
     }
 
     setSenderId(newSenderId);
@@ -141,64 +143,75 @@ export default function ChatPage() {
 
   //paste here
   const [values, setValues] = useState({
-    dateTime: new Date(),
-    description: "",
-    link: "",
-  });
-  const [callDetails, setCallDetails] = useState();
+  dateTime: new Date(),
+  description: "",
+  link: "",
+});
+const [callDetails, setCallDetails] = useState();
 
-  const client = useStreamVideoClient();
-  // const { user } = useUser();
-  const router = useRouter();
+const client = useStreamVideoClient();
+const router = useRouter();
 
-  const createMeeting = async () => {
+const createMeeting = async () => {
+  if (!client || !user) return;
+
+  try {
+    // Step 1: Check for existing active meeting
     const res = await fetch("/api/meeting/active");
-    console.log("client", client);
-    if (!client || !user) return;
     if (res.ok) {
       const data = await res.json();
-      console.log("clerkid", user.id);
-      console.log("participants", data.participants);
-      if (data.participants.includes(user.id)) {
+      if(user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com"){
+        if(data?.participants?.includes(doctor)){
+          console.log("User already in active meeting:", data.meetingId);
         router.push(`/meeting/${data.meetingId}`);
-      }
-      return;
-    } else {
-      try {
-        const id = crypto.randomUUID();
-        const call = client.call("default", id);
-        if (!call) throw new Error("Failed to Create Call");
-        const startsAt =
-          values.dateTime.toISOString() || new Date(Date.now()).toISOString();
-        const description = values.description || "Instant Meeting";
-        const participants = callParticipants;
-        await call.getOrCreate({
-          data: {
-            starts_at: startsAt,
-            custom: {
-              description,
-            },
-          },
-        });
-        setCallDetails(call);
-        if (!values.description) {
-          await fetch("/api/meeting/create", {
-            method: "POST",
-            body: JSON.stringify({
-              meetingId: id,
-              createdBy: user.id,
-              description,
-              startsAt,
-              participants,
-            }),
-          });
-          router.push(`meeting/${call.id}`);
+        return
         }
-      } catch (error) {
-        console.log(error);
+      }else if (data?.participants?.includes(user.id)) {
+        console.log("User already in active meeting:", data.meetingId);
+        router.push(`/meeting/${data.meetingId}`);
+        return;
       }
     }
-  };
+
+    // Step 2: No active meeting → create a new one
+    const id = crypto.randomUUID();
+    const call = client.call("default", id);
+    if (!call) throw new Error("Failed to create call");
+
+    const startsAt = values.dateTime.toISOString();
+    const description = values.description || "Instant Meeting";
+    const participants = callParticipants;
+
+    // Create Stream call
+    await call.getOrCreate({
+      data: {
+        starts_at: startsAt,
+        custom: {
+          description,
+        },
+      },
+    });
+
+    setCallDetails(call);
+
+    // Store meeting in your DB only if it's new
+    await fetch("/api/meeting/create", {
+      method: "POST",
+      body: JSON.stringify({
+        meetingId: id,
+        createdBy: user.id,
+        description,
+        startsAt,
+        participants,
+      }),
+    });
+
+    router.push(`/meeting/${id}`);
+  } catch (error) {
+    console.error("Error in meeting flow:", error);
+  }
+};
+
   return (
     <>
       <div className="relative p-4 w-full min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
@@ -217,8 +230,8 @@ export default function ChatPage() {
           </div>
 
           <div className="flex gap-5">
-            {/* video call button */}
 
+            {/* video call button */}
             <button
               className="p-2 bg-blue-500 text-white rounded-full"
               onClick={createMeeting}

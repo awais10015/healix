@@ -41,6 +41,7 @@ export function AppSidebar() {
   const{setSelectedUser} = useContext(selectedUserContext)
   const {selectedTheme} = useContext(trackThemeContext)
   const {doctor} = useContext(doctorContext)
+  const {setDoctor} = useContext(doctorContext)
   const fetchDoctors = async () => {
     
     const res = await fetch("/api/doctors");
@@ -157,6 +158,7 @@ if (selectedTheme === "dark") {
                 className="flex gap-2 justify-start items-center p-4 rounded-lg shadow-sm hover:shadow-sm hover:scale-105 transition cursor-pointer"
                 onClick={() => {
                   handleChat(doctor.id);
+                  setDoctor(doctor.id)
                   console.log("doctor.id", doctor.id)
                   // onSelectUser(doctor);
                   setSelectedUser(doctor)

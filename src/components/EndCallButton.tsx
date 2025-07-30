@@ -17,18 +17,18 @@ const EndCallButton = () => {
 
   return (
     <button
-      className="bg-red-600 text-white"
+      className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl shadow-lg transition-all duration-300 ease-in-out active:scale-95"
       onClick={async () => {
         await call.endCall();
-        
+
         await fetch("/api/meeting/delete", {
           method: "POST",
           body: JSON.stringify({ meetingId: call.id }),
         });
+
         router.push("/");
       }}
     >
-      {" "}
       End Call For Everyone
     </button>
   );
