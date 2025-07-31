@@ -13,7 +13,7 @@ import { FiSend } from "react-icons/fi";
 import { FaVideo } from "react-icons/fa";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-// call imports
+
 import { useRouter } from "next/navigation";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import doctorContext from "../context/doctorContext";
@@ -47,7 +47,7 @@ export default function ChatPage() {
     };
 
     const meetingHandler = (data) => {
-      toast("New Meeting Scheduled", {
+      toast("New Meeting", {
         description: `${data.message}`,
         action: {
                     label: "Join Meeting",
