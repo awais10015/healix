@@ -123,7 +123,7 @@ const Navbar = () => {
       </div>
 
       {menuOpen && (
-        <div className="absolute top-20 bg-gray-500 text-lg p-5 right-1 rounded-md  flex flex-col justify-center items-center gap-3 z-50 w-full md:hidden transition-all ease-in-out">
+        <div className="absolute top-20 bg-gray-500 text-lg p-5 right-0 rounded-md  flex flex-col justify-center items-center gap-3 z-50 w-full md:hidden transition-all ease-in-out">
           <Link
             href="/doctors"
             className="hover:text-orange-800 hover:scale-105 transition-all ease-in-out"
@@ -149,12 +149,21 @@ const Navbar = () => {
             About
           </Link>
           <ModeToggle />
-          <div className="border-t pt-3 mt-2 flex flex-col gap-2 justify-center items-center">
-            <div className="cursor-pointer">Login</div>
-            <button className="bg-black text-white px-4 py-2 rounded-3xl text-sm">
-              Consult Now
-            </button>
-          </div>
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <div className="flex flex-col">
+              <SignInButton />
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
         </div>
       )}
     </div>
