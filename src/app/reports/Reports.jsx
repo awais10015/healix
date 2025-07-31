@@ -4,6 +4,7 @@ import jsPDF from "jspdf";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useUser } from "@clerk/nextjs";
+import Loader from "@/components/Loader";
 
 const Reports = () => {
   const { user } = useUser();
@@ -44,22 +45,19 @@ const Reports = () => {
   const downloadPDF = async (report) => {
     const doc = new jsPDF();
 
-    
-    const logo = await getBase64FromUrl("/logo.png"); 
-    doc.addImage(logo, "PNG", 15, 10, 60, 20); 
+    const logo = await getBase64FromUrl("/logo.png");
+    doc.addImage(logo, "PNG", 15, 10, 60, 20);
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text("Healix Hospital", 150, 20, { align: "right" }); 
+    doc.text("Healix Hospital", 150, 20, { align: "right" });
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
     doc.text("Lab Test Report", 150, 30, { align: "right" });
 
-  
     doc.setLineWidth(0.5);
     doc.line(15, 45, 195, 45);
 
-   
     let y = 60;
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
@@ -82,11 +80,9 @@ const Reports = () => {
     const splitResult = doc.splitTextToSize(report.testResult, 170);
     doc.text(splitResult, 15, y);
 
-
     doc.save(`report-${report.patientId}.pdf`);
   };
 
-  
   const getBase64FromUrl = async (url) => {
     const res = await fetch(url);
     const blob = await res.blob();
@@ -154,21 +150,25 @@ const Reports = () => {
       <div className="max-w-6xl min-h-[330px] text-center mx-auto mb-10">
         <h2 className="text-2xl font-semibold mb-6">Lab Test Reports</h2>
 
-        <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reports.map((report) => (
-            <div
-              key={report._id}
-              className="border p-4 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
-              onClick={() => setSelectedReport(report)}
-            >
-              <h3 className="text-lg font-semibold text-blue-700">
-                {report.testName}
-              </h3>
-              <p className="">Patient: {report.patientName}</p>
-              <p className="">Patient: {report.patientId}</p>
-            </div>
-          ))}
-        </div>
+        {reports.length === 0 ? (
+          <Loader />
+        ) : (
+          <div className="grid grid-cols-1 p-10 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {reports.map((report) => (
+              <div
+                key={report._id}
+                className="border p-4 rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
+                onClick={() => setSelectedReport(report)}
+              >
+                <h3 className="text-lg font-semibold text-blue-700">
+                  {report.testName}
+                </h3>
+                <p className="">Patient: {report.patientName}</p>
+                <p className="">Patient: {report.patientId}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {selectedReport && (

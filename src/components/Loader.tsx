@@ -1,9 +1,11 @@
-import React from "react";
-import Image from "next/image";
+
+import React from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Flex, Spin } from 'antd';
 const Loader = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <Image src="/Loader.gif" alt="loading..." width={150} height={150} />
+     <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
     </div>
   );
 };
