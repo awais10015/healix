@@ -80,7 +80,7 @@ export default function ChatPage() {
     } else {
       newSenderId = user.id;
       newReceiverId = doctorId;
-      setCallParticipants([doctor?.toStrong(), user.id]);
+      setCallParticipants([doctor?.toString(), user.id]);
     }
 
     setSenderId(newSenderId);
