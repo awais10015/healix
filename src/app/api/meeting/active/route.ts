@@ -6,7 +6,8 @@ import {connect} from "@/lib/db";
 export async function GET() {
   await connect();
 
-  const activeMeeting = await Meeting.findOne().sort({ createdAt: -1 });
+  const activeMeeting = await Meeting.find()
+  console.log("active meetings", activeMeeting)
   if (!activeMeeting) {
     console.log("no active meeting")
     return NextResponse.json({ message: "No active meeting" }, { status: 404 });

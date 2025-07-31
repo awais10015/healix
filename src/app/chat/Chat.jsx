@@ -50,9 +50,11 @@ export default function ChatPage() {
       toast("New Meeting", {
         description: `${data.message}`,
         action: {
-                    label: "Join Meeting",
-                    onClick: ()=>{createMeeting()}
-                  },
+          label: "Join Meeting",
+          onClick: () => {
+            createMeeting();
+          },
+        },
       });
     };
     channel.bind("meeting-created", meetingHandler);
@@ -74,12 +76,11 @@ export default function ChatPage() {
     if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
       newSenderId = doctorId;
       newReceiverId = selectedUser?.clerkId || "";
-      setCallParticipants([doctor, selectedUser?.clerkId]);
-    
+      setCallParticipants([doctor?.toString(), selectedUser?.clerkId]);
     } else {
       newSenderId = user.id;
       newReceiverId = doctorId;
-      setCallParticipants([doctor, user.id]);
+      setCallParticipants([doctor?.toStrong(), user.id]);
     }
 
     setSenderId(newSenderId);
@@ -157,21 +158,53 @@ export default function ChatPage() {
     if (!client || !user) return;
 
     try {
-      
       const res = await fetch("/api/meeting/active");
       if (res.ok) {
         const data = await res.json();
-        if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
-          if (data?.participants?.includes(doctor)) {
-            console.log("User already in active meeting:", data.meetingId);
-            router.push(`/meeting/${data.meetingId}`);
+        for (const meeting of data) {
+          // console.log(meeting.meetingId)
+          // console.log(meeting.participants)
+          // console.log(callParticipants);
+          // console.log(meeting.participants);
+          // console.log(callParticipants.every(item=>meeting.participants.includes(item)))
+          // console.log(meeting?.participants?.includes(doctor.toString()))
+          if (
+            user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com"
+          ) {
+            if (
+              callParticipants.every((item) =>
+                meeting.participants.includes(item)
+              ) &&
+              meeting?.participants?.includes(doctor.toString())
+            ) {
+              console.log("User already in active meeting:", meeting.meetingId);
+              router.push(`/meeting/${meeting.meetingId}`);
+              return;
+            }
+          } else if (
+            callParticipants.every((item) =>
+              meeting.participants.includes(item)
+            ) &&
+            meeting?.participants?.includes(user.id)
+          ) {
+            console.log("User already in active meeting:", meeting.meetingId);
+            router.push(`/meeting/${meeting.meetingId}`);
             return;
           }
-        } else if (data?.participants?.includes(user.id)) {
-          console.log("User already in active meeting:", data.meetingId);
-          router.push(`/meeting/${data.meetingId}`);
-          return;
         }
+        // is return ko utar dena
+        // return;
+        // if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
+        //   if (data?.participants?.includes(doctor)) {
+        //     console.log("User already in active meeting:", data.meetingId);
+        //     router.push(`/meeting/${data.meetingId}`);
+        //     return;
+        //   }
+        // } else if (data?.participants?.includes(user.id)) {
+        //   console.log("User already in active meeting:", data.meetingId);
+        //   router.push(`/meeting/${data.meetingId}`);
+        //   return;
+        // }
       }
 
       const id = crypto.randomUUID();
@@ -229,7 +262,6 @@ export default function ChatPage() {
           </div>
 
           <div className="flex gap-5">
-            
             <button
               className="p-2 bg-blue-500 text-white rounded-full hover:cursor-pointer hover:scale-105"
               onClick={createMeeting}
@@ -257,7 +289,7 @@ export default function ChatPage() {
                   "awais10015@gmail.com";
 
               let isUser = selectedUser?.clerkId === user?.clerkId;
-   
+
               if (isDoctor) {
                 bubbleStyle =
                   "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
