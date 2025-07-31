@@ -58,12 +58,12 @@ const MeetingRoom = () => {
       </div>
 
     
-      <div className="flex items-center justify-between gap-4 px-4 py-2 border-t">
+      <div className="flex items-center justify-between gap-4 px-4 py-2 border-t flex-wrap">
         <CallControls onLeave={()=>{
          router.push("/")
         }} />
 
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-4 ">
           <DropdownMenu>
             <DropdownMenuTrigger>
               <LayoutList className="cursor-pointer" />
