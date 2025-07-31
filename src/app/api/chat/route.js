@@ -2,7 +2,7 @@ import { connect } from "@/lib/db";
 import Chat from "../../../models/Chat";
 import Message from "@/models/Message";
 import { NextResponse } from "next/server";
-// import { NextRequest } from "next/server";
+
 
 export async function POST(req) {
   await connect();
@@ -16,7 +16,6 @@ console.log(participants)
     );
   }
 
-  // Check if chat already exists between these participants (regardless of order)
   const existingChat = await Chat.findOne({
     participants: { $all: participants, $size: 2 },
   }).populate("messages");
@@ -25,7 +24,7 @@ console.log(participants)
     return NextResponse.json(existingChat);
   }
 
-  // If not found, create new chat
+
   const newChat = await Chat.create({ participants });
   const populatedChat = await Chat.findById(newChat._id).populate("messages");
   return NextResponse.json(populatedChat);
@@ -49,7 +48,7 @@ export async function GET(req) {
     return NextResponse.json(chat);
   }
 
-  // Default: return all chats (admin use-case?)
+  
   const chats = await Chat.find().sort({ createdAt: -1 }).populate("messages");
   return NextResponse.json(chats);
 }

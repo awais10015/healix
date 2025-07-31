@@ -16,8 +16,7 @@ const About = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-          //   markers:true
+          
         },
         opacity: 0,
         y: 300,
@@ -30,8 +29,7 @@ const About = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-          //   markers:true
+         
         },
         opacity: 0,
         y: 300,
@@ -44,8 +42,7 @@ const About = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-          //   markers:true
+         
         },
         opacity: 0,
         y: 300,
@@ -57,8 +54,7 @@ const About = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-          //   markers:true
+          
         },
         opacity: 0,
         y: 300,

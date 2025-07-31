@@ -22,8 +22,6 @@ const Doctor = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-          //   markers:true
         },
         opacity: 0,
         y: 300,
@@ -39,7 +37,7 @@ const Doctor = () => {
   const [patients, setPatients] = useState([]);
   const [doctorId, setDoctorId] = useState();
   const { setSelectedUser } = useContext(selectedUserContext);
-  const {setDoctor} = useContext(doctorContext)
+  const { setDoctor } = useContext(doctorContext);
 
   const fetchDoctors = async () => {
     const res = await fetch("/api/doctors");
@@ -56,7 +54,6 @@ const Doctor = () => {
     fetchUsers();
   }, []);
 
-  //docId ma hamesha apni id ja rhi ha jo logged in ha
   const handleChat = async (docId) => {
     if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
       if (!doctorId || !docId) {
@@ -64,7 +61,7 @@ const Doctor = () => {
         return;
       }
       const participants = [doctorId, docId];
-      console.log(participants)
+      console.log(participants);
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -73,9 +70,7 @@ const Doctor = () => {
           },
           body: JSON.stringify({ participants }),
         });
-        // if (!res.ok) {
-        //   throw new Error("Failed to create or fetch chat");
-        // }
+
         const newChat = await res.json();
         console.log("Chat ready:", newChat);
       } catch (error) {
@@ -99,7 +94,6 @@ const Doctor = () => {
           throw new Error("Failed to create or fetch chat");
         }
         const newChat = await res.json();
-        // console.log("Chat ready:", newChat);
       } catch (error) {
         console.error("Chat creation failed:", error);
       }
@@ -115,7 +109,7 @@ const Doctor = () => {
           {!doctorId ? (
             <div className="four flex flex-col justify-center items-center">
               <h1 className="text-5xl mt-10 font-medium">Who Are You</h1>
-              <div className="doc grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-15">
+              <div className="doc grid min-h-[430px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-15">
                 {doctors.map((doc) => (
                   <div
                     key={doc.id}
@@ -143,7 +137,7 @@ const Doctor = () => {
                       <button
                         onClick={() => {
                           setDoctorId(doc.id);
-                          setDoctor(doc.id)
+                          setDoctor(doc.id);
                         }}
                         className="ml-auto hover:cursor-pointer hover:scale-105 bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                       >
@@ -157,7 +151,7 @@ const Doctor = () => {
           ) : (
             <div className="four flex flex-col justify-center items-center">
               <h1 className="text-5xl mt-10 font-medium">Chat With Patients</h1>
-              <div className="flex flex-wrap justify-center gap-6 p-6">
+              <div className="flex  flex-wrap justify-center gap-6 p-6">
                 {patients.map((patient) => (
                   <div
                     key={patient._id}
@@ -200,7 +194,7 @@ const Doctor = () => {
       ) : (
         <div className="four flex flex-col justify-center items-center">
           <h1 className="text-5xl mt-10 font-medium">Meet the team</h1>
-          <div className="doc grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-15">
+          <div className="doc min-h-[430px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-15">
             {doctors.map((doc) => (
               <div
                 key={doc.id}
@@ -227,7 +221,7 @@ const Doctor = () => {
                       onClick={() => {
                         handleChat(doc.id);
                         setSelectedUser(doc);
-                        setDoctor(doc.id)
+                        setDoctor(doc.id);
                       }}
                       className="hover:cursor-pointer hover:scale-105 ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                     >

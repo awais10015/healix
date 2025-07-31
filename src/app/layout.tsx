@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { ClerkProvider } from "@clerk/nextjs";
-// import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import SelectedUserContextProvider from "@/app/context/selectedUserContextProvider";
 import TrackThemeContextProvider from "@/app/context/trackThemeContextProvider";
@@ -22,7 +22,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body suppressHydrationWarning>
-          {/* <ClerkProvider> */}
+         
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -32,12 +32,15 @@ export default function RootLayout({
             <DoctorContextProvider>
               <TrackThemeContextProvider>
                 <SelectedUserContextProvider>
-                  <StreamVideoProvider>{children}</StreamVideoProvider>
+                  <StreamVideoProvider>
+                    {children}
+                    <Toaster />
+                  </StreamVideoProvider>
                 </SelectedUserContextProvider>
               </TrackThemeContextProvider>
             </DoctorContextProvider>
           </ThemeProvider>
-          {/* </ClerkProvider> */}
+        
         </body>
       </html>
     </ClerkProvider>

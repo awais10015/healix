@@ -18,7 +18,7 @@ const Meeting = ({ params }: { params: Promise<{ id: string }> }) => {
   const [call, setCall] = useState<Call|null>(null);
   const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-  // ✅ Unwrap params
+
   const { id } = use(params);
 
   useEffect(() => {

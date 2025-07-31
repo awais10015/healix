@@ -11,7 +11,8 @@ import { sendMessage } from "@/lib/actions/message.action";
 import selectedUserContext from "../context/selectedUserContext";
 import { FiSend } from "react-icons/fi";
 import { FaVideo } from "react-icons/fa";
-
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 // call imports
 import { useRouter } from "next/navigation";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
@@ -31,7 +32,7 @@ export default function ChatPage() {
   const [receiverId, setReceiverId] = useState("");
   const { selectedUser } = useContext(selectedUserContext);
 
-  const {doctor} = useContext(doctorContext)
+  const { doctor } = useContext(doctorContext);
   const [callParticipants, setCallParticipants] = useState([]);
 
   //pusher useeffect
@@ -45,10 +46,21 @@ export default function ChatPage() {
       ]);
     };
 
+    const meetingHandler = (data) => {
+      toast("New Meeting Scheduled", {
+        description: `${data.message}`,
+        action: {
+                    label: "Join Meeting",
+                    onClick: ()=>{createMeeting()}
+                  },
+      });
+    };
+    channel.bind("meeting-created", meetingHandler);
     channel.bind("upcomming-message", handler);
 
     return () => {
       channel.unbind("upcomming-message", handler);
+      channel.unbind("meeting-created", meetingHandler);
       pusherClient.unsubscribe("chat-app");
     };
   }, []);
@@ -62,12 +74,8 @@ export default function ChatPage() {
     if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
       newSenderId = doctorId;
       newReceiverId = selectedUser?.clerkId || "";
-      setCallParticipants([
-        doctor,
-        selectedUser?.clerkId,
-      ]);
-      // console.log("selecteduser.clerkId", selectedUser?.clerkId);
-      // console.log("newReceiverId", newReceiverId);
+      setCallParticipants([doctor, selectedUser?.clerkId]);
+    
     } else {
       newSenderId = user.id;
       newReceiverId = doctorId;
@@ -102,11 +110,6 @@ export default function ChatPage() {
     }
   }, [user, doctorId, selectedUser]);
 
-
-  // useEffect(() => {
-  //   console.log("chat is", chat);
-  // }, [chat]);
-
   const submitHandler = async () => {
     console.log("chat when msg sent", chat);
     if (!text.trim()) return;
@@ -132,7 +135,6 @@ export default function ChatPage() {
       const newMessage = await res.json();
       setMessages((prev) => [newMessage, ...prev]);
 
-      //pusherCode idr likhna ha
       await sendMessage(newMessage);
 
       setText("");
@@ -141,76 +143,73 @@ export default function ChatPage() {
     }
   };
 
-  //paste here
   const [values, setValues] = useState({
-  dateTime: new Date(),
-  description: "",
-  link: "",
-});
-const [callDetails, setCallDetails] = useState();
+    dateTime: new Date(),
+    description: "",
+    link: "",
+  });
+  const [callDetails, setCallDetails] = useState();
 
-const client = useStreamVideoClient();
-const router = useRouter();
+  const client = useStreamVideoClient();
+  const router = useRouter();
 
-const createMeeting = async () => {
-  if (!client || !user) return;
+  const createMeeting = async () => {
+    if (!client || !user) return;
 
-  try {
-    // Step 1: Check for existing active meeting
-    const res = await fetch("/api/meeting/active");
-    if (res.ok) {
-      const data = await res.json();
-      if(user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com"){
-        if(data?.participants?.includes(doctor)){
+    try {
+      
+      const res = await fetch("/api/meeting/active");
+      if (res.ok) {
+        const data = await res.json();
+        if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
+          if (data?.participants?.includes(doctor)) {
+            console.log("User already in active meeting:", data.meetingId);
+            router.push(`/meeting/${data.meetingId}`);
+            return;
+          }
+        } else if (data?.participants?.includes(user.id)) {
           console.log("User already in active meeting:", data.meetingId);
-        router.push(`/meeting/${data.meetingId}`);
-        return
+          router.push(`/meeting/${data.meetingId}`);
+          return;
         }
-      }else if (data?.participants?.includes(user.id)) {
-        console.log("User already in active meeting:", data.meetingId);
-        router.push(`/meeting/${data.meetingId}`);
-        return;
       }
-    }
 
-    // Step 2: No active meeting → create a new one
-    const id = crypto.randomUUID();
-    const call = client.call("default", id);
-    if (!call) throw new Error("Failed to create call");
+      const id = crypto.randomUUID();
+      const call = client.call("default", id);
+      if (!call) throw new Error("Failed to create call");
 
-    const startsAt = values.dateTime.toISOString();
-    const description = values.description || "Instant Meeting";
-    const participants = callParticipants;
+      const startsAt = values.dateTime.toISOString();
+      const description = values.description || "Instant Meeting";
+      const participants = callParticipants;
 
-    // Create Stream call
-    await call.getOrCreate({
-      data: {
-        starts_at: startsAt,
-        custom: {
-          description,
+      // Create Stream call
+      await call.getOrCreate({
+        data: {
+          starts_at: startsAt,
+          custom: {
+            description,
+          },
         },
-      },
-    });
+      });
 
-    setCallDetails(call);
+      setCallDetails(call);
 
-    // Store meeting in your DB only if it's new
-    await fetch("/api/meeting/create", {
-      method: "POST",
-      body: JSON.stringify({
-        meetingId: id,
-        createdBy: user.id,
-        description,
-        startsAt,
-        participants,
-      }),
-    });
+      await fetch("/api/meeting/create", {
+        method: "POST",
+        body: JSON.stringify({
+          meetingId: id,
+          createdBy: user.id,
+          description,
+          startsAt,
+          participants,
+        }),
+      });
 
-    router.push(`/meeting/${id}`);
-  } catch (error) {
-    console.error("Error in meeting flow:", error);
-  }
-};
+      router.push(`/meeting/${id}`);
+    } catch (error) {
+      console.error("Error in meeting flow:", error);
+    }
+  };
 
   return (
     <>
@@ -230,8 +229,7 @@ const createMeeting = async () => {
           </div>
 
           <div className="flex gap-5">
-
-            {/* video call button */}
+            
             <button
               className="p-2 bg-blue-500 text-white rounded-full hover:cursor-pointer hover:scale-105"
               onClick={createMeeting}
@@ -257,9 +255,9 @@ const createMeeting = async () => {
                 msg.senderId === doctorId &&
                 user?.emailAddresses[0]?.emailAddress ===
                   "awais10015@gmail.com";
-              // console.log(isDoctor)
+
               let isUser = selectedUser?.clerkId === user?.clerkId;
-              // console.log(selectedUser)
+   
               if (isDoctor) {
                 bubbleStyle =
                   "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";

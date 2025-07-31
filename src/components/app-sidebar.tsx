@@ -30,9 +30,7 @@ type users = {
   lastName: string;
   __v: number;
 };
-// type AppSidebarProps = {
-//   onSelectUser: (user: users) => void;
-// };
+
 export function AppSidebar() {
   const [Admin, setAdmin] = useState("");
   const [patients, setPatients] = useState<users[]>([]);

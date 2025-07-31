@@ -1,16 +1,10 @@
 
-
-//part 1 to copy
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useUser } from "@clerk/nextjs";
 
-
-
-
-//part 2 to copy
 
 const page = () => {
   const [values, setValues] = useState({
@@ -66,9 +60,6 @@ const page = () => {
     }
   };
 
-
-
-  //part 3 to copy
   return (
     <div>
       <button

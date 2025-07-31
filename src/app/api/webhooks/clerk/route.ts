@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 import { createUser } from "@/lib/actions/user.action";
 
-// Define a custom type for Clerk "user.created" event
 interface ClerkUserCreatedEvent {
   data: {
     id: string;

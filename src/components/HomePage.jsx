@@ -17,8 +17,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+     
         },
         opacity: 0,
         y: 300,
@@ -32,8 +31,7 @@ const HomePage = () => {
           start: "top bottom",
           end: "top center",
 
-          // scrub: true,
-        //   markers: true,
+         
         },
         opacity: 0,
         y: 300,
@@ -45,8 +43,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+       
         },
         opacity: 0,
         y: 300,
@@ -58,8 +55,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+          
         },
         opacity: 0,
         y: 300,
@@ -72,8 +68,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+        
         },
         opacity: 0,
         y: 300,
@@ -86,8 +81,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top bottom",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+       
         },
         opacity: 0,
         y: 200,
@@ -100,13 +94,12 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+       
         },
         opacity: 0,
         y: 300,
         duration: 0.8,
-        // delay: 1,
+   
       });
       gsap.from(".C2", {
         scrollTrigger: {
@@ -114,8 +107,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+    
         },
         opacity: 0,
         y: 200,
@@ -128,8 +120,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+
         },
         opacity: 0,
         y: 300,
@@ -142,8 +133,7 @@ const HomePage = () => {
           scroller: "body",
           start: "top 100%",
           end: "top 0%",
-          // scrub: true,
-        //   markers:true
+          
         },
         opacity: 0,
         y: 300,
@@ -194,7 +184,7 @@ const HomePage = () => {
       </div>
 
       <div className="mt-15 flex flex-col lg:flex-row justify-center items-stretch gap-6 px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20 mb-20">
-        {/* Card 1 */}
+        
         <div className="card1 flex-1  bg-[#F0F5F6] rounded-3xl p-6 flex flex-col justify-between items-center text-center">
           <h1 className="text-xl text-black font-semibold mb-4">
             Enhanced health awareness
@@ -212,7 +202,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Card 2 */}
         <div className="card2 flex-1 bg-[url('/unionBG.png')] bg-cover bg-center rounded-3xl p-6 flex flex-col justify-between items-start text-center text-white backdrop-blur-sm">
           <div className="text-2xl font-semibold flex flex-col items-start mb-6">
             <h1 className="bg-white rounded-3xl text-xl text-black p-2">
@@ -240,7 +229,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Card 3 */}
+        
         <div className="card3 flex-1 bg-[#F0F5F6] rounded-3xl p-6 flex flex-col justify-between items-center text-center">
           <h1 className="text-xl text-black font-semibold mb-4">
             Faster response to health changes
@@ -256,7 +245,7 @@ const HomePage = () => {
       </div>
 
       <div className="px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-10">
-        {/* Heading Section */}
+      
         <div className="heading1 flex flex-col lg:flex-row gap-6 mb-10">
           <h1 className="flex-1 text-3xl sm:text-4xl lg:text-5xl font-black">
             Features designed for your health journey
@@ -267,9 +256,9 @@ const HomePage = () => {
           </p>
         </div>
 
-        {/* Cards Section */}
+       
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Card 1 - Normal size */}
+          
           <div className="C1 bg-[#F0F5F6] p-6 sm:p-10 rounded-3xl flex flex-col shadow-md lg:flex-1 text-start">
             <h1 className="text-2xl text-black sm:text-3xl font-bold mb-4">
               Get answers to your health questions
@@ -286,7 +275,6 @@ const HomePage = () => {
             />
           </div>
 
-          {/* Card 2 - Slightly larger */}
           <div className="C1 bg-[#F0F5F6] p-6 sm:p-10 rounded-3xl flex flex-col shadow-md lg:flex-[1.5] text-start">
             <h1 className="text-2xl text-black sm:text-3xl font-bold mb-4">
               Find answers to all your health concerns
@@ -306,7 +294,7 @@ const HomePage = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 px-5 sm:px-10 lg:px-20 py-10">
-        {/* Card 1 - Slightly Bigger */}
+        
         <div className="C2 bg-[#F0F5F6] p-6 sm:p-10 rounded-3xl flex flex-col shadow-md lg:flex-[1.8] text-start">
           <h1 className="text-2xl text-black sm:text-3xl font-bold mb-4">
             Find solutions to your health inquiries
@@ -316,7 +304,7 @@ const HomePage = () => {
           </h3>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* Image 1 - Wider */}
+          
             <div className="flex-[1.2]">
               <Image
                 className="rounded-2xl w-full h-auto object-cover"
@@ -327,7 +315,7 @@ const HomePage = () => {
               />
             </div>
 
-            {/* Image 2 - Narrower */}
+           
             <div className="flex-[0.8]">
               <Image
                 className="rounded-2xl w-full h-auto object-cover"
@@ -340,7 +328,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Card 2 - Slightly Smaller */}
+        
         <div className="C2 bg-[#F0F5F6] p-6 sm:p-10 rounded-3xl flex flex-col shadow-md lg:flex-[1] text-start">
           <h1 className="text-2xl text-black sm:text-3xl font-bold mb-4">
             Discover answers to your health concerns
@@ -360,10 +348,10 @@ const HomePage = () => {
 
       <div className=" w-full px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-10">
         <div className=" relative w-full h-[80vh] rounded-3xl overflow-hidden">
-          {/* Background image */}
+         
           <div className="all absolute inset-0 bg-[url('/upperbg.png')] bg-cover bg-center brightness-50 rounded-3xl"></div>
 
-          {/* Content */}
+        
           <div className="relative z-10 h-full flex items-center px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20">
             <div className="w-full md:w-1/2 text-white space-y-4">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-snug">
@@ -379,7 +367,7 @@ const HomePage = () => {
       </div>
 
       <div className="A1 px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-10 mt-10">
-        {/* Top Text */}
+        
         <h1 className=" text-xl sm:text-3xl lg:text-5xl font-semibold  mb-6">
           Studies show that proactive health tracking can reduce chronic{" "}
           <span className="text-blue-700 font-bold">
@@ -387,14 +375,14 @@ const HomePage = () => {
           </span>
         </h1>
 
-        {/* Background Section */}
+        
         <div className=" relative mt-5 bg-[url('/lowerbg.png')] bg-cover bg-center rounded-3xl overflow-hidden py-10">
-          {/* Dim overlay */}
+          
           <div className="absolute inset-0 bg-black/10 rounded-3xl z-0"></div>
 
-          {/* Buttons & Stat Content */}
+         
           <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-6 items-start lg:items-end px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20">
-            {/* Button Group */}
+          
             <div className="flex flex-wrap gap-3">
               {[
                 "Rehabilitation",
@@ -412,7 +400,7 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Stats Card */}
+           
             <div className="bg-white rounded-2xl p-6 shadow-lg max-w-md w-full mt-6 lg:mt-6 lg:mb-6">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                 Health Monitoring Matters
@@ -427,7 +415,7 @@ const HomePage = () => {
         </div>
 
         <div className="A2 flex flex-col lg:flex-row gap-8 mt-20">
-          {/* Left Section - Heading */}
+          
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black flex-2 leading-tight ">
             Speak with one of our health tech experts to discover{" "}
             <span className="text-gray-600 block lg:inline">
@@ -435,7 +423,7 @@ const HomePage = () => {
             </span>
           </h1>
 
-          {/* Right Section - Text + Button */}
+        
           <div className=" flex-1 flex flex-col justify-center gap-6 mt-6 lg:mt-0">
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
               Start your health journey with Healix today. Your health, your

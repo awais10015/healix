@@ -44,24 +44,22 @@ const Reports = () => {
   const downloadPDF = async (report) => {
     const doc = new jsPDF();
 
-    // 1. Load logo (70x30) and draw on left
-    const logo = await getBase64FromUrl("/logo.png"); // Must be PNG
-    doc.addImage(logo, "PNG", 15, 10, 60, 20); // x=15, y=10, width=70, height=30
-
-    // 2. Right-side header text
+    
+    const logo = await getBase64FromUrl("/logo.png"); 
+    doc.addImage(logo, "PNG", 15, 10, 60, 20); 
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text("Healix Hospital", 150, 20, { align: "right" }); // right-aligned
+    doc.text("Healix Hospital", 150, 20, { align: "right" }); 
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "normal");
     doc.text("Lab Test Report", 150, 30, { align: "right" });
 
-    // 3. Horizontal line under header
+  
     doc.setLineWidth(0.5);
     doc.line(15, 45, 195, 45);
 
-    // 4. Report Body
+   
     let y = 60;
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
@@ -84,11 +82,11 @@ const Reports = () => {
     const splitResult = doc.splitTextToSize(report.testResult, 170);
     doc.text(splitResult, 15, y);
 
-    // Save
+
     doc.save(`report-${report.patientId}.pdf`);
   };
 
-  // 🔁 Helper: convert image to base64
+  
   const getBase64FromUrl = async (url) => {
     const res = await fetch(url);
     const blob = await res.blob();

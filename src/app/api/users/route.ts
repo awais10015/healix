@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connect();
-    const users = await User.find().sort({ username: 1 }); // Alphabetical order by username
+    const users = await User.find().sort({ username: 1 });
     return NextResponse.json(users);
   } catch (error) {
     console.error("Failed to fetch users:", error);

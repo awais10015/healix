@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutList, Users } from "lucide-react";
 import EndCallButton from "./EndCallButton";
+import {useRouter} from "next/navigation";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 const MeetingRoom = () => {
+  const router = useRouter()
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
 
@@ -35,16 +37,15 @@ const MeetingRoom = () => {
 
   return (
     <section className="relative h-screen w-full flex flex-col">
-      {/* Main Video Area */}
+     
       <div className="flex flex-1 relative">
-        {/* Call Layout */}
+       
         <div className="flex-grow flex justify-center items-center">
           <div className="w-full max-w-[1000px]">
             <CallLayout />
           </div>
         </div>
 
-        {/* Participants Sidebar */}
         <div
           style={{ height: "calc(100vh - 86px)" }}
           className={cn("ml-2", {
@@ -56,9 +57,11 @@ const MeetingRoom = () => {
         </div>
       </div>
 
-      {/* Controls and Layout Switcher */}
+    
       <div className="flex items-center justify-between gap-4 px-4 py-2 border-t">
-        <CallControls />
+        <CallControls onLeave={()=>{
+         router.push("/")
+        }} />
 
         <div className="flex items-center gap-4">
           <DropdownMenu>

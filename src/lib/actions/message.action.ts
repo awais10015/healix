@@ -5,7 +5,7 @@ interface ChatMessage {
   text: string;
   senderId: string;
   receiverId: string;
-  timestamp: string; // or Date
+  timestamp: string; 
 }
 export const sendMessage = async (messageObj: ChatMessage): Promise<void> => {
   try {
