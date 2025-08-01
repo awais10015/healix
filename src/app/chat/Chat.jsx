@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -39,6 +39,21 @@ export default function ChatPage() {
   const [callParticipants, setCallParticipants] = useState([]);
 
   const [messageSentState, setMessageSentState] = useState(true);
+ const chatBoxRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTo({
+        top: chatBoxRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [message]);
+
   //pusher useeffect
   useEffect(() => {
     const channel = pusherClient.subscribe("chat-app");
@@ -268,8 +283,12 @@ export default function ChatPage() {
         ) : (
           <>
             <div
+              ref={chatBoxRef}
               id="chat-box"
-              className="flex flex-col gap-2 h-[490px] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide"
+              className="
+              
+              flex flex-col gap-2 h-[calc(100vh-150px)] sm:h-[calc(100vh-150px)] md:h-[calc(100vh-145px)] lg:h-[calc(100vh-150px)] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide
+              "
             >
               {Array.isArray(message) && message.length > 0 ? (
                 message.map((msg, i) => {
