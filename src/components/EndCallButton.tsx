@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 
 const EndCallButton = () => {
   const call = useCall();

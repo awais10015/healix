@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import { useUser } from "@clerk/nextjs";
 import selectedUserContext from "../context/selectedUserContext";
 import doctorContext from "../context/doctorContext";
@@ -58,7 +58,7 @@ const Doctor = () => {
 
   const handleClick = () => {
     if (!user) {
-      setOpenDialog(true); // ❗ Show dialog
+      setOpenDialog(true);
     } else {
       handleChat(doc.id);
       setSelectedUser(doc);

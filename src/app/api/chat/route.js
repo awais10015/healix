@@ -8,7 +8,7 @@ export async function POST(req) {
   await connect();
   const body = await req.json();
   const { participants } = body;
-console.log(participants)
+
   if (!participants || participants.length !== 2) {
     return NextResponse.json(
       { error: "Participants must be an array of two user IDs." },
@@ -40,7 +40,7 @@ export async function GET(req) {
     const chat = await Chat.findOne({
       participants: { $all: participants, $size: 2 },
     }).populate("messages");
-    console.log(Message)
+    
     if (!chat) {
       return NextResponse.json({ error: "Chat not found" }, { status: 404 });
     }

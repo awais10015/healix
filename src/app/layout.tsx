@@ -8,6 +8,7 @@ import SelectedUserContextProvider from "@/app/context/selectedUserContextProvid
 import TrackThemeContextProvider from "@/app/context/trackThemeContextProvider";
 import { StreamVideoProvider } from "@/providers/StreamClientProvider";
 import DoctorContextProvider from "@/app/context/doctorContextProvider";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "Healix-Home",
@@ -26,7 +27,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body suppressHydrationWarning>
-         
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -37,6 +37,15 @@ export default function RootLayout({
               <TrackThemeContextProvider>
                 <SelectedUserContextProvider>
                   <StreamVideoProvider>
+                    <NextTopLoader
+                      color="#2299DD"
+                      initialPosition={0.08}
+                      crawlSpeed={200}
+                      height={3}
+                      crawl={false}
+                      showSpinner={false}
+                      easing="ease"
+                    />
                     {children}
                     <Toaster />
                   </StreamVideoProvider>
@@ -44,7 +53,6 @@ export default function RootLayout({
               </TrackThemeContextProvider>
             </DoctorContextProvider>
           </ThemeProvider>
-        
         </body>
       </html>
     </ClerkProvider>

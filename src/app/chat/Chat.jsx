@@ -13,10 +13,13 @@ import { FiSend } from "react-icons/fi";
 import { FaVideo } from "react-icons/fa";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-
-import { useRouter } from "next/navigation";
+import ChatLoading from "@/components/ChatLoading";
+import { useRouter } from "nextjs-toploader/app";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import doctorContext from "../context/doctorContext";
+import Loader from "@/components/Loader";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Flex, Spin } from "antd";
 
 export default function ChatPage() {
   const [chats, setChats] = useState();
@@ -35,6 +38,7 @@ export default function ChatPage() {
   const { doctor } = useContext(doctorContext);
   const [callParticipants, setCallParticipants] = useState([]);
 
+  const [messageSentState, setMessageSentState] = useState(true);
   //pusher useeffect
   useEffect(() => {
     const channel = pusherClient.subscribe("chat-app");
@@ -112,7 +116,6 @@ export default function ChatPage() {
   }, [user, doctorId, selectedUser]);
 
   const submitHandler = async () => {
-    console.log("chat when msg sent", chat);
     if (!text.trim()) return;
 
     if (!chat) {
@@ -121,6 +124,7 @@ export default function ChatPage() {
     }
     const chatId = chat;
     try {
+      setMessageSentState(false);
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: {
@@ -131,6 +135,7 @@ export default function ChatPage() {
 
       if (!res.ok) {
         console.error("Failed to send message");
+        setMessageSentState(true);
         return;
       }
       const newMessage = await res.json();
@@ -139,6 +144,7 @@ export default function ChatPage() {
       await sendMessage(newMessage);
 
       setText("");
+      setMessageSentState(true);
     } catch (err) {
       console.error("Error sending message:", err);
     }
@@ -255,71 +261,92 @@ export default function ChatPage() {
             <ModeToggle />
           </div>
         </div>
+        {!chat ? (
+          <>
+            <ChatLoading />
+          </>
+        ) : (
+          <>
+            <div
+              id="chat-box"
+              className="flex flex-col gap-2 h-[490px] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide"
+            >
+              {Array.isArray(message) && message.length > 0 ? (
+                message.map((msg, i) => {
+                  let bubbleStyle = "";
 
-        <div
-          id="chat-box"
-          className="flex flex-col gap-2 h-[490px] overflow-y-auto p-4 rounded-md border-none bg-gray-50 dark:bg-gray-900 shadow-inner scrollbar-hide"
-        >
-          {Array.isArray(message) && message.length > 0 ? (
-            message.map((msg, i) => {
-              let bubbleStyle = "";
+                  let isDoctor =
+                    msg.senderId === doctorId &&
+                    user?.emailAddresses[0]?.emailAddress ===
+                      "awais10015@gmail.com";
 
-              let isDoctor =
-                msg.senderId === doctorId &&
-                user?.emailAddresses[0]?.emailAddress ===
-                  "awais10015@gmail.com";
+                  let isUser = selectedUser?.clerkId === user?.clerkId;
 
-              let isUser = selectedUser?.clerkId === user?.clerkId;
+                  if (isDoctor) {
+                    bubbleStyle =
+                      "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
+                  } else if (
+                    isUser &&
+                    ["1", "2", "3", "4", "5", "6"].includes(msg.receiverId)
+                  ) {
+                    bubbleStyle =
+                      "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
+                  } else {
+                    bubbleStyle =
+                      "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-t-4xl rounded-br-4xl self-start";
+                  }
 
-              if (isDoctor) {
-                bubbleStyle =
-                  "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
-              } else if (
-                isUser &&
-                ["1", "2", "3", "4", "5", "6"].includes(msg.receiverId)
-              ) {
-                bubbleStyle =
-                  "bg-blue-500 text-white rounded-t-4xl rounded-bl-4xl self-end";
-              } else {
-                bubbleStyle =
-                  "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-t-4xl rounded-br-4xl self-start";
-              }
+                  return (
+                    <div
+                      key={i}
+                      className={` max-w-xs px-5 py-3  text-sm shadow-md ${bubbleStyle}`}
+                    >
+                      <div className="text-md font-medium mb-3">{msg.text}</div>
 
-              return (
-                <div
-                  key={i}
-                  className={` max-w-xs px-5 py-3  text-sm shadow-md ${bubbleStyle}`}
-                >
-                  <div className="text-md font-medium mb-3">{msg.text}</div>
-
-                  <div className=" bottom-1 right-2 text-[10px] text-black">
-                    {new Date(msg.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                      <div className=" bottom-1 right-2 text-[10px] text-black">
+                        {new Date(msg.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <div className="flex space-x-1 mb-3">
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-3 h-3 bg-gray-400 rounded-full animate-bounce"></div>
                   </div>
+                  <p className="text-gray-500 text-lg">No messages yet</p>
                 </div>
-              );
-            })
-          ) : (
-            <p className="text-sm relative flex items-center justify-center h-full text-gray-500 italic">No messages yet.</p>
-          )}
-        </div>
+              )}
+            </div>
 
-        <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white dark:bg-gray-900 z-20 p-4  flex items-center gap-2 sm:px-6 md:px-10">
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 rounded-lg focus:outline-none shadow-sm text-sm"
-            placeholder="Type your message..."
-          />
-          <button
-            onClick={submitHandler}
-            className="group p-2 hover:cursor-pointer bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all ease-in-out hover:scale-110"
-          >
-            <FiSend className="w-5 h-5 transition-all ease-in-out hover:scale-110" />
-          </button>
-        </div>
+            <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white dark:bg-gray-900 z-20 p-4  flex items-center gap-2 sm:px-6 md:px-10">
+              <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 rounded-lg focus:outline-none shadow-sm text-sm"
+                placeholder="Type your message..."
+              />
+
+              {messageSentState ? (
+                <button
+                  onClick={submitHandler}
+                  className="group p-2 hover:cursor-pointer bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all ease-in-out hover:scale-110"
+                >
+                  <FiSend className="w-5 h-5 transition-all ease-in-out hover:scale-110" />
+                </button>
+              ) : (
+                <div className="group mb-1 ml-2 text-white rounded-full transition-all ease-in-out hover:scale-110">
+                  <Spin indicator={<LoadingOutlined spin />} size="large" />
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
