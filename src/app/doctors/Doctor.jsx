@@ -56,13 +56,14 @@ const Doctor = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (docId, doc) => {
+    console.log(docId)
     if (!user) {
       setOpenDialog(true);
     } else {
-      handleChat(doc.id);
+      handleChat(docId);
       setSelectedUser(doc);
-      setDoctor(doc.id);
+      setDoctor(docId);
       router.push(`/chat?doctorId=${doc.id}`);
     }
   };
@@ -256,7 +257,9 @@ const Doctor = () => {
                       {/* <Link href={`/chat?doctorId=${doc.id}`}> */}
                       <div>
                         <button
-                          onClick={handleClick}
+                          onClick={()=>{
+                            handleClick(doc.id , doc)
+                          }}
                           className="hover:cursor-pointer hover:scale-105 ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                         >
                           Chat
