@@ -6,6 +6,7 @@ import {
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { tokenProvider } from "@/Actions/stream.actions";
+import Loader from "@/components/Loader";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
@@ -38,7 +39,7 @@ export const StreamVideoProvider = ({
   }, [user, isLoaded]);
 
   
-  if (user && !videoClient) return <div>Loading...</div>;
+  if (user && !videoClient) return <Loader/>;
 
   
   return videoClient ? (

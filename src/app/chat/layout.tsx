@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import ChatPage from "./Chat";
 import { Suspense } from "react";
 import SelectedUserContextProvider from "../context/selectedUserContextProvider";
-
+import Loader from "@/components/Loader";
 
 export default function Layout() {
   
@@ -17,7 +17,7 @@ export default function Layout() {
           </aside>
 
           <main className="flex-1 relative overflow-hidden">
-            <Suspense fallback={<div>Loading chat...</div>}>
+            <Suspense fallback={<Loader/>}>
               <ChatPage />
             </Suspense>
           </main>
