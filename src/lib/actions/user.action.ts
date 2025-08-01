@@ -18,7 +18,6 @@ export async function createUser(user: CreateUserInput) {
   try {
     await connect();
 
-
     const existingUser = await User.findOne({ clerkId: user.clerkId });
     if (existingUser) {
       console.log("⚠️ User already exists:", existingUser.email);

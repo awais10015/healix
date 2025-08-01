@@ -8,9 +8,13 @@ import SelectedUserContextProvider from "@/app/context/selectedUserContextProvid
 import TrackThemeContextProvider from "@/app/context/trackThemeContextProvider";
 import { StreamVideoProvider } from "@/providers/StreamClientProvider";
 import DoctorContextProvider from "@/app/context/doctorContextProvider";
+
 export const metadata: Metadata = {
-  title: "Healix",
+  title: "Healix-Home",
   description: "Where care meets innovation",
+  icons: {
+    icon: "/union2.svg",
+  },
 };
 
 export default function RootLayout({

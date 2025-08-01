@@ -6,11 +6,25 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
+import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import selectedUserContext from "../context/selectedUserContext";
 import doctorContext from "../context/doctorContext";
 import Loader from "@/components/Loader";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedOut,
+} from "@clerk/nextjs";
 
 const Doctor = () => {
   gsap.registerPlugin(ScrollTrigger);
@@ -32,13 +46,26 @@ const Doctor = () => {
 
     return () => ctx.revert();
   }, []);
-
+  const router = useRouter();
   const { user } = useUser();
   const [doctors, setdoctors] = useState([]);
   const [patients, setPatients] = useState([]);
   const [doctorId, setDoctorId] = useState();
   const { setSelectedUser } = useContext(selectedUserContext);
   const { setDoctor } = useContext(doctorContext);
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClick = () => {
+    if (!user) {
+      setOpenDialog(true); // ❗ Show dialog
+    } else {
+      handleChat(doc.id);
+      setSelectedUser(doc);
+      setDoctor(doc.id);
+      router.push(`/chat?doctorId=${doc.id}`);
+    }
+  };
 
   const fetchDoctors = async () => {
     const res = await fetch("/api/doctors");
@@ -226,18 +253,41 @@ const Doctor = () => {
                           {doc.designation}
                         </p>
                       </div>
-                      <Link href={`/chat?doctorId=${doc.id}`}>
+                      {/* <Link href={`/chat?doctorId=${doc.id}`}> */}
+                      <div>
                         <button
-                          onClick={() => {
-                            handleChat(doc.id);
-                            setSelectedUser(doc);
-                            setDoctor(doc.id);
-                          }}
+                          onClick={handleClick}
                           className="hover:cursor-pointer hover:scale-105 ml-auto bg-[#2563EB] text-white px-4 py-2 rounded-2xl hover:bg-[#1E40AF] transition"
                         >
                           Chat
                         </button>
-                      </Link>
+
+                        
+                        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Login Required</DialogTitle>
+                              <DialogDescription>
+                                You must be logged in to chat with a doctor.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="flex justify-end gap-4 mt-4">
+                              {/* <DialogClose asChild>
+                                <Button variant="outline">Close</Button>
+                              </DialogClose> */}
+                              <SignedOut>
+                                <SignInButton className="hover:cursor-pointer" />
+                                <SignUpButton>
+                                  <button className="bg-[#6c47ff] hover:cursor-pointer text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                                    Sign Up
+                                  </button>
+                                </SignUpButton>
+                              </SignedOut>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                      {/* </Link> */}
                     </div>
                   </div>
                 ))}

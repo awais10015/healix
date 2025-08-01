@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import Meeting from "@/models/meetingModel";
 import {connect} from "@/lib/db";

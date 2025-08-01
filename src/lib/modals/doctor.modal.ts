@@ -1,4 +1,3 @@
-// lib/modals/doctor.modal.ts
 import mongoose, { Schema } from "mongoose";
 
 const DoctorSchema = new Schema(

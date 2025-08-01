@@ -2,8 +2,6 @@ import mongoose, { Mongoose } from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL;
 
-// console.log("MONGODB_URL:", process.env.MONGODB_URL);
-
 if (!MONGODB_URL) {
   throw new Error("Please define MONGODB_URL in your .env.local");
 }
@@ -13,7 +11,7 @@ interface MongooseConn {
   promise: Promise<Mongoose> | null;
 }
 
-// Add custom type to globalThis
+
 declare global {
   var mongoose: MongooseConn | undefined;
 }
@@ -38,8 +36,5 @@ export const connect = async (): Promise<Mongoose> => {
   cached.conn = await cached.promise;
   return cached.conn;
 
-  // if (mongoose.connections[0].readyState) return;
-  // await mongoose.connect(MONGODB_URL, {
-  //   dbName: "hospital",
-  // });
+ 
 };

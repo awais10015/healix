@@ -162,12 +162,6 @@ export default function ChatPage() {
       if (res.ok) {
         const data = await res.json();
         for (const meeting of data) {
-          // console.log(meeting.meetingId)
-          // console.log(meeting.participants)
-          // console.log(callParticipants);
-          // console.log(meeting.participants);
-          // console.log(callParticipants.every(item=>meeting.participants.includes(item)))
-          // console.log(meeting?.participants?.includes(doctor.toString()))
           if (
             user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com"
           ) {
@@ -192,19 +186,6 @@ export default function ChatPage() {
             return;
           }
         }
-        // is return ko utar dena
-        // return;
-        // if (user?.emailAddresses[0]?.emailAddress === "awais10015@gmail.com") {
-        //   if (data?.participants?.includes(doctor)) {
-        //     console.log("User already in active meeting:", data.meetingId);
-        //     router.push(`/meeting/${data.meetingId}`);
-        //     return;
-        //   }
-        // } else if (data?.participants?.includes(user.id)) {
-        //   console.log("User already in active meeting:", data.meetingId);
-        //   router.push(`/meeting/${data.meetingId}`);
-        //   return;
-        // }
       }
 
       const id = crypto.randomUUID();
@@ -321,7 +302,7 @@ export default function ChatPage() {
               );
             })
           ) : (
-            <p className="text-sm text-gray-400 italic">No messages yet.</p>
+            <p className="text-sm relative flex items-center justify-center h-full text-gray-500 italic">No messages yet.</p>
           )}
         </div>
 
@@ -334,7 +315,7 @@ export default function ChatPage() {
           />
           <button
             onClick={submitHandler}
-            className="group p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all ease-in-out hover:scale-110"
+            className="group p-2 hover:cursor-pointer bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all ease-in-out hover:scale-110"
           >
             <FiSend className="w-5 h-5 transition-all ease-in-out hover:scale-110" />
           </button>

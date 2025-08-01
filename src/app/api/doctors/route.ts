@@ -1,4 +1,3 @@
-
 import { connect } from "@/lib/db";
 import Doctor from "@/lib/modals/doctor.modal";
 import { error } from "console";

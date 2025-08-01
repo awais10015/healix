@@ -185,7 +185,7 @@ const HomePage = () => {
 
       <div className="mt-15 flex flex-col lg:flex-row justify-center items-stretch gap-6 px-5 sm:px-6 md:px-10 lg:px-16 xl:px-20 mb-20">
         
-        <div className="card1 flex-1  bg-[#F0F5F6] rounded-3xl p-6 flex flex-col justify-between items-center text-center">
+        <div className="card1 flex-1 bg-[#F0F5F6] rounded-3xl p-6 flex flex-col justify-between items-center text-center">
           <h1 className="text-xl text-black font-semibold mb-4">
             Enhanced health awareness
           </h1>
